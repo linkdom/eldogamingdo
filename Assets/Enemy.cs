@@ -34,36 +34,38 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float playerDistance = Vector3.Distance(transform.position, player.position);
-        Vector3 direction = player.position - transform.position;
 
-        if (direction.x >= 0) 
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0); // If the player is to the right, face right.
-        }
-        else
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0); // If the player is to the left, face left.
-        }
-        // If the player is within the followDistance, the enemy will move towards the player.
-        if (player != null && playerDistance <= followDistance)
-        {
-            // If the player is within the attackRange and enough time has passed since the last attack, the enemy will attack.
-            if (playerDistance <= attackRange && Time.time - lastAttackTime >= attackDelay)
+        if (player != null) {
+
+            float playerDistance = Vector3.Distance(transform.position, player.position);
+            Vector3 direction = player.position - transform.position;
+
+            if (direction.x >= 0) 
             {
-                AttackPlayer();
-                lastAttackTime = Time.time; // Reset the last attack time.
+                transform.eulerAngles = new Vector3(0, 0, 0);
+            } else {
+                transform.eulerAngles = new Vector3(0, 180, 0);
             }
-            else
+
+            if (player != null && playerDistance <= followDistance)
             {
-                transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+                // If the player is within the attackRange and enough time has passed since the last attack, the enemy will attack.
+                if (playerDistance <= attackRange && Time.time - lastAttackTime >= attackDelay)
+                {
+                    AttackPlayer();
+                    lastAttackTime = Time.time; // Reset the last attack time.
+                } else {
+                    transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+                }
+
+            }
+
+            if(currentHealth <= 0) 
+            {
+                Destroy(gameObject);
             }
         }
 
-        if(currentHealth <= 0) 
-        {
-            Destroy(gameObject);
-        }
     }
 
     void AttackPlayer()
