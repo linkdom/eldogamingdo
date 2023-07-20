@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public HealthBar healthBar;
     public GameObject panel;
 
+    public GameObject camera;
+
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +81,8 @@ public class Player : MonoBehaviour
             panel.SetActive(true);
             Destroy(gameObject);
         }
+
+        camera.transform.position = new Vector3(transform.position.x, 5, -10);
     }
 
     public void TakeDamage(int damage) {
